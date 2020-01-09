@@ -4,7 +4,7 @@ cabal-version: 1.12
 --
 -- see: https://github.com/sol/hpack
 --
--- hash: 90f0e034b8b1eb9974c6661a9e919266d6f16338fd74518564cb3df905593659
+-- hash: 7ad509a4d00f86bb01e074fa4e91715eefef54d2cf4081c38acc33091cc63d85
 
 name:           monad-transformers
 version:        0.1.0.0
@@ -27,6 +27,7 @@ source-repository head
 
 library
   exposed-modules:
+      Eval
       Lib
       Transformers
   other-modules:
@@ -36,6 +37,7 @@ library
   build-depends:
       base >=4.7 && <5
     , containers ==0.6.0.1
+    , mtl ==2.2.2
   default-language: Haskell2010
 
 executable monad-transformers-exe
@@ -49,6 +51,7 @@ executable monad-transformers-exe
       base >=4.7 && <5
     , containers ==0.6.0.1
     , monad-transformers
+    , mtl ==2.2.2
   default-language: Haskell2010
 
 test-suite monad-transformers-test
@@ -63,4 +66,5 @@ test-suite monad-transformers-test
       base >=4.7 && <5
     , containers ==0.6.0.1
     , monad-transformers
+    , mtl ==2.2.2
   default-language: Haskell2010
