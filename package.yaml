@@ -1,10 +1,10 @@
 name:                monad-transformers
 version:             0.1.0.0
-github:              "githubuser/monad-transformers"
+github:              "vaibhav276/monad-transformers"
 license:             BSD3
-author:              "Author name here"
-maintainer:          "example@example.com"
-copyright:           "2020 Author name here"
+author:              "Vaibhav Pujari"
+maintainer:          "276vaibhav+github@gmail.com"
+copyright:           "2020 Vaibhav Pujari"
 
 extra-source-files:
 - README.md

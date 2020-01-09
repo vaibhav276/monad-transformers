@@ -3,8 +3,9 @@
 module Transformers where
 
 import Control.Monad.Identity
+import Control.Monad.Except
 
-type M a = Identity a
+type M a = ExceptT String Identity a
 
-runEval :: M a -> a
-runEval ma = runIdentity ma
+runEval :: M a -> Either String a
+runEval ma = runIdentity (runExceptT ma)

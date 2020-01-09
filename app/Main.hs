@@ -13,6 +13,7 @@ main = putStrLn $ unlines $ runTests tests
 tests :: [Exp]
 tests = [
   Lit 12 `Plus` (App (Abs "x" (Var "x")) (Lit 4 `Plus` Lit 2))
+  , Plus (Lit 1) (Abs "x" (Var "x"))
   ]
 
 runTests :: [Exp] -> [String]

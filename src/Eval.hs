@@ -2,8 +2,10 @@
 
 module Eval where
 
-import qualified Data.Map     as Map
-import           Data.Maybe
+import           Control.Monad.Except
+import qualified Data.Map             as Map
+
+import           Transformers
 
 type Name = String
 
@@ -22,18 +24,19 @@ data Value =
 
 type Env = Map.Map Name Value
 
-eval :: Monad m => Env -> Exp -> m Value
+eval :: Env -> Exp -> M Value
 eval _ (Lit i) = pure $ IntVal i
-eval e (Var x) = pure $ fromJust $ Map.lookup x e -- TODO: no failure case handling
+eval e (Var x) = case Map.lookup x e of
+                   Just v -> pure v
+                   _      -> throwError ("Undefined var: " ++ x)
 eval e (Plus e1 e2) = do v1 <- eval e e1
                          v2 <- eval e e2
-                         case v1 of -- TODO: non-exhaustive pattern matches
-                           IntVal i1 -> case v2 of -- TODO: non-exhaustive pattern matches
-                             IntVal i2 -> pure $ IntVal (i1 + i2)
+                         case (v1, v2) of
+                           (IntVal i1, IntVal i2) -> pure $ IntVal (i1 + i2)
+                           _                      -> throwError "Type error"
 eval e (Abs n e1) = pure $ FunVal e n e1
 eval e (App e1 e2) = do v1 <- eval e e1
                         v2 <- eval e e2
-                        case v1 of -- TODO: non-exhaustive pattern matches
-                          FunVal e' n' b' -> case v2 of -- TODO: non-exhaustive pattern matches
-                            IntVal _ -> eval (Map.insert n' v2 e') b'
-
+                        case (v1, v2) of
+                          (FunVal e' n' b', IntVal _) -> eval (Map.insert n' v2 e') b'
+                          _                           -> throwError "Type error"
