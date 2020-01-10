@@ -16,7 +16,9 @@ tests = [
   ]
 
 runTests :: [Exp] -> [String]
-runTests = map (show . runEval Map.empty . eval)
+runTests = map (show . runEval Map.empty 0 . eval)
 
--- >>> (runEval Map.empty . eval) (tests!!0)
--- Right (IntVal 18)
+-- >>> (runEval Map.empty 0 . eval) (tests!!0)
+-- (Right (IntVal 18),8)
+-- >>> (runEval Map.empty 0 . eval) (tests!!1)
+-- (Left "Type error",3)
