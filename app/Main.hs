@@ -19,6 +19,6 @@ runTests :: [Exp] -> [String]
 runTests = map (show . runEval Map.empty 0 . eval)
 
 -- >>> (runEval Map.empty 0 . eval) (tests!!0)
--- (Right (IntVal 18),8)
+-- ((Right (IntVal 18),8),["Var ref: x"])
 -- >>> (runEval Map.empty 0 . eval) (tests!!1)
--- (Left "Type error",3)
+-- ((Left "Type error",3),[])

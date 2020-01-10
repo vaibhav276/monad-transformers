@@ -2,17 +2,18 @@
 
 module Eval where
 
-import           Control.Monad.State
 import           Control.Monad.Except
 import           Control.Monad.Identity
 import           Control.Monad.Reader
+import           Control.Monad.State
+import           Control.Monad.Writer
 import qualified Data.Map               as Map
 
 
-type M = ReaderT Env (ExceptT String (StateT Integer Identity))
+type M = ReaderT Env (ExceptT String (StateT Integer (WriterT [String] Identity)))
 
-runEval :: Env -> St -> M a -> (Either String a, St)
-runEval e s ma = runIdentity (runStateT (runExceptT (runReaderT ma e)) s)
+runEval :: Env -> St -> M a -> ((Either String a, St), [String])
+runEval e s ma = runIdentity (runWriterT (runStateT (runExceptT (runReaderT ma e)) s))
 
 tick :: (Num s, MonadState s m) => m ()
 -- tick = do s <- get
@@ -40,6 +41,7 @@ eval :: Exp -> M Value
 eval (Lit i) = do tick
                   pure $ IntVal i
 eval (Var x) = do tick
+                  tell ["Var ref: " ++ x]
                   e <- ask
                   case Map.lookup x e of
                     Just v -> pure v
