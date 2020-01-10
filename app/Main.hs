@@ -3,7 +3,6 @@ module Main where
 
 import qualified Data.Map as Map
 
-import Transformers
 import Eval
 
 main :: IO ()
@@ -17,7 +16,7 @@ tests = [
   ]
 
 runTests :: [Exp] -> [String]
-runTests ts = map (show . runEval . (eval Map.empty)) ts
+runTests = map (show . runEval Map.empty . eval)
 
--- >>> runEval (eval Map.empty exampleExp)
--- IntVal 18
+-- >>> (runEval Map.empty . eval) (tests!!0)
+-- Right (IntVal 18)
